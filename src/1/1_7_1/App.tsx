@@ -1,9 +1,4 @@
-// 1_7_1 Splitting a list in two 
-/*
-  В этом примере показан список всех людей.
-
-  Измените его, чтобы последовательно вывести два отдельных списка: Химики и Все остальные. Как и ранее, вы можете определить, является ли человек химиком, проверив, что person.profession === 'chemist'.
-*/
+// 1_7_1 feat: список people разделён на два подсписка по профессии chemists и others
 
 import { people } from './data.js';
 import { getImageUrl } from './utils.js';
@@ -16,24 +11,34 @@ export type Person = {
   imageId: string;
 }
 
-export default function List() {
-    const listItems = people.map((person) => (
-        <li key={person.id}>
-            <img
-                src={getImageUrl(person)}
-                alt={person.name}
-            />
+function PersonList({ title, people }: { title: string; people: Person[] }) {
+  return (
+    <div>
+      <h2>{title}</h2>
+      <ul>
+        {people.map(person => (
+          <li key={person.id}>
+            <img src={getImageUrl(person)} alt={person.name} />
             <p>
-                <b>{person.name}:</b>
-                {' ' + person.profession + ' '}
-                known for {person.accomplishment}
+              <b>{person.name}:</b>{' '}
+              {person.profession} known for {person.accomplishment}
             </p>
-        </li>
-    ));
-    return (
-        <article>
-            <h1>Scientists</h1>
-            <ul>{listItems}</ul>
-        </article>
-    );
+          </li>
+        ))}
+      </ul>
+    </div>
+  );
+}
+
+export default function List() {
+  const chemists = people.filter(p => p.profession === 'chemist');
+  const others = people.filter(p => p.profession !== 'chemist');
+
+  return (
+    <article>
+      <h1>Scientists</h1>
+      <PersonList title="Chemists" people={chemists} />
+      <PersonList title="Other scientists" people={others} />
+    </article>
+  );
 }
