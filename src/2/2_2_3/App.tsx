@@ -1,35 +1,31 @@
-// 2_2_3 Fix a crash
-/*
-  Вот небольшая форма, которая должна позволить пользователю оставить отзыв. Когда отзыв отправлен, предполагается отобразить сообщение с благодарностью. Однако при этом происходит сбой с сообщением об ошибке: "Rendered lesser hooks than expected". Можете ли вы заметить ошибку и исправить ее?
-*/
+// 2_2_3 fix: предотвращён сбой при отображении сообщения с помощью хука
 
 import { useState } from 'react';
 
 export default function FeedbackForm() {
-    const [isSent, setIsSent] = useState(false);
-    if (isSent) {
-        return <h1>Thank you!</h1>;
-    } else {
-        // eslint-disable-next-line
-        const [message, setMessage] = useState('');
-        return (
-            <form
-                onSubmit={(e) => {
-                    e.preventDefault();
-                    alert(`Sending: "${message}"`);
-                    setIsSent(true);
-                }}
-            >
-                <textarea
-                    placeholder="Message"
-                    value={message}
-                    onChange={(e) =>
-                        setMessage(e.target.value)
-                    }
-                />
-                <br />
-                <button type="submit">Send</button>
-            </form>
-        );
-    }
+  const [isSent, setIsSent] = useState(false);
+  const [message, setMessage] = useState('');
+
+  if (isSent) 
+    return <h1>Thank you!</h1>;
+    
+  return (
+    <form
+      onSubmit={(e) => {
+        e.preventDefault();
+        alert(`Sending: "${message}"`);
+        setIsSent(true);
+      }}
+    >
+      <textarea
+        placeholder="Message"
+        value={message}
+        onChange={(e) =>
+          setMessage(e.target.value)
+        }
+      />
+      <br />
+      <button type="submit">Send</button>
+    </form>
+  );
 }
